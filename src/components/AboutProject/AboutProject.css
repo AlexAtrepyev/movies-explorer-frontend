@@ -1,0 +1,143 @@
+.about-project {
+  padding-top: 110px;
+  padding-right: calc((100% + 512px) / 25.6);
+  padding-bottom: 110px;
+  padding-left: calc((100% + 512px) / 25.6);
+}
+
+.about-project__title {
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+  color: black;
+  padding-bottom: 23px;
+  border-bottom: 1px solid black;
+  margin: 0;
+}
+
+.about-project__items {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 40px;
+  padding: 0;
+  margin: 70px 0 110px;
+}
+
+.article__title {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.04em;
+  color: black;
+  margin: 0;
+}
+
+.article__description {
+  font-size: 14px;
+  line-height: 20px;
+  color: black;
+  margin: 26px 0 0;
+}
+
+.timeline {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline__chunk {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline__element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 17px;
+  height: 36px;
+}
+
+.timeline__element_color_black {
+  color: white;
+  background-color: black;
+}
+
+.timeline__element_color_gray {
+  color: black;
+  background-color: #f2f2f2;
+}
+
+.timeline__element_color_white {
+  font-weight: 500;
+  color: #a0a0a0;;
+}
+
+@media screen and (max-width: 768px) {
+  .about-project {
+    padding-top: 90px;
+    padding-right: calc((100% - 232.062px) / 10.719);
+    padding-bottom: 90px;
+    padding-left: calc((100% - 232.062px) / 10.719);
+  }
+  
+  .about-project__items {
+    margin-bottom: 93px;
+  }
+
+  .article__description {
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 22px;
+  }
+
+  .timeline__element_color_white {
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .timeline {
+    grid-template-columns: 35% 65%;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .about-project {
+    padding: 70px 18px;
+  }
+  
+  .about-project__title {
+    font-size: 18px;
+    line-height: 22px;
+    padding-bottom: 28px;
+  }
+
+  .about-project__items {
+    grid-template-columns: 1fr;
+    grid-gap: 56px;
+    margin: 60px 0;
+  }
+
+  .article__title {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .article__description {
+    font-size: 11px;
+    line-height: 16px;
+    margin-top: 16px;
+  }
+
+  .timeline__element {
+    font-size: 11px;
+    line-height: 13px;
+    height: 35px;
+  }
+}

@@ -1,0 +1,31 @@
+.account {
+  display: flex;
+  align-items: center;
+  margin-left: 50px;
+  transition: opacity .25s ease;
+}
+
+.account:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+.account__name {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  color: #000;
+}
+
+.account__image {
+  background-color: #f9f9f9;
+  padding: 9px;
+  border-radius: 6px;
+  margin-left: 13px;
+}
+
+@media screen and (max-width: 768px) {
+  .account {
+    margin-left: 0;
+  }
+}
