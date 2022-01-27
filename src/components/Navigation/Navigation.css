@@ -74,6 +74,7 @@
   .nav__link_active {
     padding-bottom: 8px;
     border-bottom: 2px solid #000;
+    margin-bottom: 18px;
   }
 }
 
@@ -89,5 +90,9 @@
   
   .nav__link_has-frame {
     padding: 5px 12px;
+  }
+
+  .nav__link_active {
+    margin-bottom: 14px;
   }
 }

@@ -10,7 +10,7 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
-let isLogged = true;
+let isLogged = true; // вынести в глобальный стейт
 
 function App() {
   return (

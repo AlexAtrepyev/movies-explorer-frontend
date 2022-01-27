@@ -3,7 +3,6 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import More from '../More/More';
 import Preloader from '../Preloader/Preloader';
 import cards from '../../utils/cards';
-//const cards = null;
 
 function MoviesCardList(props) {
   return (
