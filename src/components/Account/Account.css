@@ -1,6 +1,7 @@
 .account {
   display: flex;
   align-items: center;
+  text-decoration: none;
   margin-left: 50px;
   transition: opacity .25s ease;
 }

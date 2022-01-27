@@ -1,4 +1,5 @@
 import './Login.css';
+import { Link } from 'react-router-dom';
 import AppLogo from '../AppLogo/AppLogo';
 import Form from '../Form/Form';
 
@@ -11,7 +12,7 @@ function Login() {
         <Form isNameRequired={false} submitText='Войти' />
         <div className="register__redirection">
           Ещё не зарегистрированы?
-          <a className="register__login-link" href="#">Регистрация</a>
+          <Link className="register__login-link" to="/signup">Регистрация</Link>
         </div>
       </div>
     </section>

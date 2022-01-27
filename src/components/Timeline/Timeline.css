@@ -1,0 +1,56 @@
+.timeline {
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline__chunk {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeline__element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  line-height: 17px;
+  height: 36px;
+}
+
+.timeline__element_color_black {
+  color: white;
+  background-color: black;
+}
+
+.timeline__element_color_gray {
+  color: black;
+  background-color: #f2f2f2;
+}
+
+.timeline__element_color_white {
+  font-weight: 500;
+  color: #a0a0a0;;
+}
+
+@media screen and (max-width: 768px) {
+  .timeline__element_color_white {
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .timeline {
+    grid-template-columns: 35% 65%;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .timeline__element {
+    font-size: 11px;
+    line-height: 13px;
+    height: 35px;
+  }
+}

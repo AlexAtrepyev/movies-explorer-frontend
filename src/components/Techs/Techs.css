@@ -16,30 +16,6 @@
   margin: 0;
 }
 
-.tech-article {
-  margin: 100px auto;
-  max-width: 460px;
-}
-
-.tech-article__title {
-  font-weight: 400;
-  font-size: 50px;
-  line-height: 58px;
-  letter-spacing: -0.04em;
-  text-align: center;
-  color: black;
-  margin: 0;
-}
-
-.tech-article__description {
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: -0.04em;
-  text-align: center;
-  color: black;
-  margin: 26px 0 0;
-}
-
 .tech__items {
   list-style-type: none;
   display: grid;
@@ -72,16 +48,6 @@
     padding-left: calc((100% - 232.062px) / 10.719);
   }
 
-  .tech-article {
-    margin: 80px auto 83px;
-  }
-
-  .tech-article__description {
-    font-size: 12px;
-    line-height: 18px;
-    margin-top: 22px;
-  }
-
   .tech__items {
     grid-template-columns: repeat(auto-fit, 83px);
   }
@@ -102,21 +68,6 @@
     font-size: 18px;
     line-height: 22px;
     padding-bottom: 28px;
-  }
-
-  .tech-article {
-    margin: 60px auto 50px;
-  }
-
-  .tech-article__title {
-    font-size: 30px;
-    line-height: 36px;
-  }
-  
-  .tech-article__description {
-    font-size: 11px;
-    line-height: 16px;
-    margin-top: 24px;
   }
 
   .tech__items {

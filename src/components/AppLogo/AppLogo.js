@@ -1,11 +1,12 @@
 import './AppLogo.css';
+import { Link } from 'react-router-dom';
 import appLogo from '../../images/app-logo.svg';
 
 function AppLogo() {
   return (
-    <a className="app-logo" href="#">
+    <Link className="app-logo" to="/">
       <img src={appLogo} alt="логотип" />
-    </a>
+    </Link>
   );
 }
 

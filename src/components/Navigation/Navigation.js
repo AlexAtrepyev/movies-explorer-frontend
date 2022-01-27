@@ -1,34 +1,23 @@
 import './Navigation.css';
+import { NavLink } from 'react-router-dom';
 
 function Navigation(props) {
   return (
-    <nav>
-      <ul className={`navigation ${props.location}__navigation`}>
-        {props.isLogged ? (
-          <>
-            {props.location === 'menu' && (
-              <li className="navigation__item navigation__item_logged_in">
-                <a className="navigation__link navigation__link__logged_in" href="#">Главная</a>
-              </li>
-            )}
-            <li className="navigation__item navigation__item_logged_in">
-              <a className="navigation__link navigation__link__logged_in navigation__link_active" href="#">Фильмы</a>
-            </li>
-            <li className="navigation__item navigation__item_logged_in">
-              <a className="navigation__link navigation__link__logged_in" href="#">Сохранённые фильмы</a>
-            </li>            
-          </>
-        ) : (
-          <>
-            <li className="navigation__item navigation__item_logged_out">
-              <a className="navigation__link navigation__link_logged_out" href="#">Регистрация</a>
-            </li>
-            <li className="navigation__item navigation__item_logged_out">
-              <a className="navigation__link navigation__link_logged_out navigation__link_has-frame" href="#">Войти</a>
-            </li>
-          </>
-        )}
-      </ul>
+    <nav className={`nav ${props.location}__nav`}>
+      {props.isLogged ? (
+        <>
+          {props.location === 'menu' && (
+            <NavLink className="nav__link nav__link_logged_in" to="/" activeClassName="nav__link_active">Главная</NavLink>
+          )}
+          <NavLink className="nav__link nav__link_logged_in" to="/movies" activeClassName="nav__link_active">Фильмы</NavLink>
+          <NavLink className="nav__link nav__link_logged_in" to="/saved-movies" activeClassName="nav__link_active">Сохранённые фильмы</NavLink>
+        </>
+      ) : (
+        <>
+          <NavLink className="nav__link nav__link_logged_out" to="/signup" activeClassName="nav__link_active">Регистрация</NavLink>
+          <NavLink className="nav__link nav__link_logged_out nav__link_has-frame" to="/signin" activeClassName="nav__link_active">Войти</NavLink>
+        </>
+      )}
     </nav>
   );
 }

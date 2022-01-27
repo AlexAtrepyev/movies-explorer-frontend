@@ -1,4 +1,5 @@
 import './Register.css';
+import { Link } from 'react-router-dom';
 import AppLogo from '../AppLogo/AppLogo';
 import Form from '../Form/Form';
 
@@ -11,7 +12,7 @@ function Register() {
         <Form isNameRequired={true} submitText='Зарегистрироваться' />
         <div className="register__redirection">
           Уже зарегистрированы?
-          <a className="register__login-link" href="#">Войти</a>
+          <Link className="register__login-link" to="/signin">Войти</Link>
         </div>
       </div>
     </section>

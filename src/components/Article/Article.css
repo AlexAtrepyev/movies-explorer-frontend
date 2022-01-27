@@ -1,0 +1,70 @@
+.tech__article {
+  margin: 100px auto;
+  max-width: 460px;
+}
+
+.article__title {
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+.article__title_section_about {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.article__title_section_tech {
+  font-size: 50px;
+  line-height: 58px;
+  text-align: center;
+}
+
+.article__description {
+  font-size: 14px;
+  line-height: 20px;
+  margin: 26px 0 0;
+}
+
+.article__description_section_tech {
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .tech__article {
+    margin: 80px auto 83px;
+  }
+
+  .article__description {
+    font-size: 12px;
+    line-height: 18px;
+    margin-top: 22px;
+  }
+}
+
+@media screen and (max-width: 426px) {
+  .tech__article {
+    margin: 60px auto 50px;
+  }
+
+  .article__title_section_about {
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .article__title_section_tech {
+    font-size: 30px;
+    line-height: 36px;
+  }
+  
+  .tech-article__description {
+    font-size: 11px;
+    line-height: 16px;
+    margin-top: 16px;
+  }
+
+  .article__description_section_tech {
+    margin-top: 24px;
+  }
+}

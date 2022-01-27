@@ -65,7 +65,7 @@
   transition: opacity .25s ease;
 }
 
-.form__submit:hover {
+.profile__submit:hover {
   opacity: .7;
 }
 

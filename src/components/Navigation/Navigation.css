@@ -1,57 +1,48 @@
-.navigation {
-  list-style-type: none;
+.nav {
   display: flex;
-  padding: 0;
-  margin: 0;
-}
-
-.header__navigation {
-  flex-direction: row;
-}
-
-.menu__navigation {
-  flex-direction: column;
   align-items: center;
 }
 
-.navigation__item_logged_in {
-  margin-left: 20px;
+.header__nav {
+  flex-direction: row;
 }
 
-.navigation__item_logged_in:first-of-type {
-  margin-left: 0;
+.menu__nav {
+  flex-direction: column;
 }
 
-.navigation__item_logged_out {
-  margin-left: 30px;
-}
-
-.navigation__item_logged_out:first-of-type {
-  margin-left: 0;
-}
-
-.navigation__link {
+.nav__link {
   color: #000;
   text-decoration: none;
   transition: opacity .25s ease;
 }
 
-.navigation__link:hover {
+.nav__link:hover {
   opacity: .7;
 }
 
-.navigation__link__logged_in {
+.nav__link_logged_in {
   font-size: 14px;
-  line-height: 18px;  
+  line-height: 18px;
+  margin-left: 20px;
 }
 
-.navigation__link_logged_out {
+.nav__link_logged_in:first-of-type {
+  margin-left: 0;
+}
+
+.nav__link_logged_out {
   font-weight: 500;
   font-size: 12px;
-  line-height: 16px;  
+  line-height: 16px;
+  margin-left: 30px;
 }
 
-.navigation__link_has-frame {
+.nav__link_logged_out:first-of-type {
+  margin-left: 0;
+}
+
+.nav__link_has-frame {
   color: #fff;
   background-color: #000;
   padding: 8px 20px;
@@ -59,50 +50,44 @@
   border-radius: 3px;
 }
 
-.navigation__link_has-frame:hover {
+.nav__link_has-frame:hover {
   opacity: .8;
 }
 
-.navigation__link_active {
+.nav__link_active {
   font-weight: 500;
 }
 
 @media screen and (max-width: 768px) {
-  .navigation__item_logged_in {
+  .nav__link_logged_in {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
     margin-left: 0;
     margin-bottom: 28px;
   }
 
-  .navigation__item_logged_in:last-of-type {
+  .nav__link_logged_in:last-of-type {
     margin-bottom: 0;
   }
-
-  .navigation__link__logged_in {
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 22px;
-  }
-
-  .navigation__link_active {
+  
+  .nav__link_active {
     padding-bottom: 8px;
     border-bottom: 2px solid #000;
   }
 }
 
 @media screen and (max-width: 426px) {
-  .navigation__item_logged_in {
+  .nav__link_logged_in {
     margin-bottom: 24px;
   }
 
-  .navigation__item_logged_out {
+  .nav__link_logged_out {
+    font-size: 10px; 
     margin-left: 14px;
   }
-
-  .navigation__link_logged_out {
-    font-size: 10px;    
-  }
-
-  .navigation__link_has-frame {
+  
+  .nav__link_has-frame {
     padding: 5px 12px;
   }
 }
