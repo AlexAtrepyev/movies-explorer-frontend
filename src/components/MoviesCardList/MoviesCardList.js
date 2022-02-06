@@ -1,30 +1,20 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
-import More from '../More/More';
-import Preloader from '../Preloader/Preloader';
-import cards from '../../utils/cards';
 
 function MoviesCardList(props) {
   return (
-    <section className="movies-card-list">
-      {cards ? (
-        <>
-          <ul className="movies-card-list__items">
-            {cards.map(card => (
-              <MoviesCard
-                key={card.id}
-                nameRU={card.nameRU}
-                duration={card.duration}
-                image={card.image.url}
-                isSaved={card.saved}
-              />
-            ))}
-          </ul>
-          <More />
-        </>
-      ) : (
-        <Preloader />
-      )}
+    <section className={`movies-card-list${props.section === 'saved-movies' ? ' saved-movies__movies-card-list' : ''} `} >
+      <ul className="movies-card-list__items">
+        {props.cards.map(card => (
+          <MoviesCard
+            key={card.id}
+            nameRU={card.nameRU}
+            duration={card.duration}
+            image={card.image.url}
+            isSaved={card.saved}
+          />
+        ))}
+      </ul>
     </section>
   );
 }

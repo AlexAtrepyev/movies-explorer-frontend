@@ -4,6 +4,10 @@
   padding: 50px 0 80px;
 }
 
+.saved-movies__more {
+  height: 140px;
+}
+
 .more__button {
   width: 320px;
   height: 36px;
