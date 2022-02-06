@@ -48,7 +48,6 @@
   color: #000;
   padding: 0;
   border: none;
-  outline: none;
 }
 
 .search-form__input::placeholder {

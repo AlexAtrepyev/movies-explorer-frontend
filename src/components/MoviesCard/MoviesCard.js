@@ -10,7 +10,7 @@ function MoviesCard(props) {
   return (
     <li key={props.key} className="movies-card">
       <div className="movies-card__img-container">
-        <img className="movies-card__img" src={`https://api.nomoreparties.co${props.image}`} alt={props.nameRu} />
+        <img className="movies-card__img" src={`https://api.nomoreparties.co${props.image}`} alt="Постер фильма" />
       </div>
       <div className="movies-card__info-container">
         <h2 className="movies-card__title">{props.nameRU}</h2>

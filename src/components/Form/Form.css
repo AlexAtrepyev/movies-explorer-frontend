@@ -20,7 +20,6 @@
   border: none;
   border-radius: 8px;
   margin-bottom: 20px;
-  outline: none;
 }
 
 .form__input::placeholder {
