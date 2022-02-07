@@ -1,0 +1,11 @@
+.app-logo {
+  display: inline-block;
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  transition: opacity .25s ease;
+}
+
+.app-logo:hover {
+  opacity: .7;
+}
