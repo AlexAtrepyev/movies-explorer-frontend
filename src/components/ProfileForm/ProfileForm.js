@@ -1,8 +1,8 @@
 import React from 'react';
-import './Form.css';
+import './ProfileForm.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 
-function Form(props) {
+function ProfileForm(props) {
   const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
 
   const parseErrors = (errors) => {
@@ -15,12 +15,12 @@ function Form(props) {
   }
   
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="profile-form" onSubmit={handleSubmit}>
       {props.inputList.map(input => (
-        <p className="form__field" key={input.key}>
-          <label className="form__label">{input.label}</label>
+        <p className="profile-form__field" key={input.key}>
+          <label className="profile-form__label">{input.label}</label>
           <input
-            className="form__input"
+            className="profile-form__input"
             type={input.type}
             name={input.name}
             placeholder={input.placeholder}
@@ -30,16 +30,9 @@ function Form(props) {
           />
         </p>
       ))}
-
-      <label className={`form__error${isValid ? ' form__error_hidden' : ''}`}>{parseErrors(errors)}</label>
-      <button
-        className={`form__submit form__submit_${props.margin}${isValid ? '' : ' form__submit_inactive'}`}
-        type="submit"
-      >
-        {props.submitText}
-      </button>
+      <button className="profile-form__submit" type="submit" >{props.submitText}</button>
     </form>
   );
 }
 
-export default Form;
+export default ProfileForm;

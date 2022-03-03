@@ -9,16 +9,16 @@ function Header(props) {
     <header className="header">
       <AppLogo />
 
-      {props.isLogged ? (
+      {props.loggedIn ? (
         <>
           <div className="header__content">
-            <Navigation isLogged={props.isLogged} location="header" />
+            <Navigation isLogged={props.loggedIn} location="header" />
             <Account />
           </div>
-          <Menu isLogged={props.isLogged} />
+          <Menu isLogged={props.loggedIn} />
         </>
       ) : (
-        <Navigation isLogged={props.isLogged} location="header" />
+        <Navigation isLogged={props.loggedIn} location="header" />
       )}
       
     </header>

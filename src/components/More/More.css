@@ -4,6 +4,10 @@
   padding: 50px 0 80px;
 }
 
+.more_inactive {
+  padding-bottom: 116px;
+}
+
 .more__button {
   width: 320px;
   height: 36px;
@@ -28,5 +32,4 @@
   .more__button {
     width: 240px;
   }
-  
 }

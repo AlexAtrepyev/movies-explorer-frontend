@@ -7,23 +7,48 @@ function convertDuration(duration) {
 }
 
 function MoviesCard(props) {
+  const {
+    section,
+    data,
+    isSaved,
+    addSavedMovie,
+    deleteSavedMovie
+  } = props;
+
+  function handleAddMovie() {
+    addSavedMovie(data)
+  }
+
+  function handleDeleteMovie() {
+    deleteSavedMovie(data.movieId);
+  }
+
   return (
-    <li key={props.key} className="movies-card">
+    <li className="movies-card">
       <div className="movies-card__img-container">
-        <img className="movies-card__img" src={`https://api.nomoreparties.co${props.image}`} alt="Постер фильма" />
+        <img className="movies-card__img" src={data.image} alt="Постер фильма" />
       </div>
       <div className="movies-card__info-container">
-        <h2 className="movies-card__title">{props.nameRU}</h2>
-        <span className="movies-card__duration">{convertDuration(props.duration)}</span>
+        <h2 className="movies-card__title">{data.nameRU}</h2>
+        <span className="movies-card__duration">{convertDuration(data.duration)}</span>
       </div>
-      {props.isSaved ? (
-        <div className="movies-card__saved-label corner-elem" />
-      ) : (
-        <button className="movies-card__btn movies-card__btn_type_add corner-elem">Сохранить</button>
+      {section === 'movies' ?
+        isSaved ? (
+          <div className="movies-card__saved-label corner-elem" />
+        ) : (
+          <button
+            className="movies-card__btn movies-card__btn_type_add corner-elem"
+            onClick={handleAddMovie}
+          >
+            Сохранить
+          </button>
+        )
+      : (
+        <button
+          className="movies-card__btn movies-card__btn_type_delete corner-elem"
+          onClick={handleDeleteMovie}
+        />
       )}
-      {
-      //<button className="movies-card__btn movies-card__btn_type_delete corner-elem" />
-      }
     </li>
   );
 }

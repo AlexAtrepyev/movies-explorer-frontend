@@ -4,6 +4,16 @@
   width: 100%;
 }
 
+.form__field {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 20px;
+}
+
+.form__field:last-of-type {
+  margin-bottom: 10px;
+}
+
 .form__label {
   font-size: 10px;
   line-height: 12px;
@@ -19,15 +29,10 @@
   padding: 15px;
   border: none;
   border-radius: 8px;
-  margin-bottom: 20px;
 }
 
 .form__input::placeholder {
   color: #a0a0a0;
-}
-
-.form__input:last-of-type {
-  margin-bottom: 10px;
 }
 
 .form__input_incorrect {
@@ -69,6 +74,12 @@
 
 .form__submit_margin_l {
   margin-top: 157px;
+}
+
+.form__submit_inactive {
+  opacity: .5;
+  pointer-events: none;
+  user-select: none;
 }
 
 @media screen and (max-width: 426px) {

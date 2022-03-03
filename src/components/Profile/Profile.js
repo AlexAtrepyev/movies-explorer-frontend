@@ -1,21 +1,27 @@
+import React from 'react';
 import './Profile.css';
+import ProfileForm from '../ProfileForm/ProfileForm';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile() {
+function Profile(props) {
+  const currentUser = React.useContext(CurrentUserContext);
+
+  const inputList = [
+    {key: 1, label: 'Имя', type: 'text', name: 'name', placeholder: currentUser?.name},
+    {key: 2, label: 'E-mail', type: 'email', name: 'email', placeholder: currentUser?.email},
+  ]
+
   return (
     <section className="profile">
-      <h1 className="profile__title">Привет, Виталий!</h1>
-      <form className="profile__form">
-        <p className="profile__field">
-          <label className="profile__label" for="name">Имя</label>
-          <input className="profile__input" type="text" name="name" id="name" placeholder="Виталий" required />
-        </p>
-        <p className="profile__field">
-          <label className="profile__label" for="email">E-mail</label>
-          <input className="profile__input" type="email" name="email" id="email" placeholder="pochta@yandex.ru" required />
-        </p>
-        <button className="profile__submit" type="submit" >Редактировать</button>
-      </form>
-      <button className="profile__logout-btn">Выйти из аккаунта</button>
+      <h1 className="profile__title">{`Привет, ${currentUser.name}!`}</h1>
+
+      <ProfileForm
+        inputList={inputList}
+        submitText='Редактировать'
+        onSubmit={props.onUpdateUser}
+      />
+
+      <button className="profile__logout-btn" onClick={props.onSignOut}>Выйти из аккаунта</button>
     </section>
   );
 }
