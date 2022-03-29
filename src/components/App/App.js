@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Main from '../Main/Main';
@@ -9,145 +9,203 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import MainApi from '../../utils/MainApi';
-import MoviesApi from '../../utils/MoviesApi';
+import mainApi from '../../utils/MainApi';
+import moviesApi from '../../utils/MoviesApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import useCustomState from '../../hooks/useCustomState';
+import useLocalStorageState from '../../hooks/useLocalStorageState';
+
+import { dataTemplate, filterByQuery, filterByCheckbox, parseMoviesData, findSaved } from '../../utils/utils';
 
 function App() {
   const history = useHistory();
+
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useLocalStorageState('currentUser', null);
   
-  const [currentUser, setCurrentUser] = useCustomState('currentUser', null);
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [moviesData, setMoviesData] = useLocalStorageState('moviesData', dataTemplate);
+  const [savedMoviesData, setSavedMoviesData] = useLocalStorageState('savedMoviesData', dataTemplate);
 
-  const [beatfilmMovies, setBeatfilmMovies] = useCustomState('beatfilmMovies', null);
-  const [reqText, setReqText] = useCustomState('reqText', null);
-  const [isFilterChecked, setIsFilterChecked] = useCustomState('isFilterChecked', false);
-  const [moviesToShow, setMoviesToShow] = useCustomState('moviesToShow', null);
-
-  const [displayedCount, setDisplayedCount] = React.useState(12);
-
-  const [savedMovies, setSavedMovies] = useCustomState('savedMovies', null);
+  const [displayedCount, setDisplayedCount] = useState(12);
   
-  const checkToken = React.useCallback(
-    () => {
-      MainApi.getUserInfo()
-        .then(() => {
-          setLoggedIn(true);
-        })
-        .catch(err => {
-          setLoggedIn(false);
-          console.log(err);
-        });
-    },
-    [setLoggedIn]
-  );
+  // funcs
+  function checkToken() {
+    mainApi.getUserInfo()
+      .then(() => setLoggedIn(true))
+      .catch(err => {
+        setLoggedIn(false);
+        console.log(err);
+      });
+  }
+  
+  function searchMovies(data, stableQuery) {
+    const searched = filterByCheckbox(filterByQuery(data.initial, stableQuery), data.shortsOnly);
+    const func = data === moviesData ? setMoviesData : setSavedMoviesData;
+    func({
+      ...data,
+      stableQuery: stableQuery,
+      searched: searched
+    });
+  };
+
+  function setSavedInfo(data) {
+    return data?.map(item => {
+      const saved = findSaved(item, savedMoviesData.initial);
+      if (saved) {
+        item.isSaved = true;
+        item._id = saved._id;
+      }
+      return item;
+    });
+  }
 
   function clearStates() {
     setLoggedIn(false);
     setCurrentUser(null);
-    setBeatfilmMovies(null);
-    setReqText(null);
-    setIsFilterChecked(false);
-    setMoviesToShow(null);
-    setSavedMovies(null);
+    setMoviesData(dataTemplate);
+    setSavedMoviesData(dataTemplate);
+    setDisplayedCount(12);
   }
   
-  function getMoviesToShow() {
-      function searchMovies(movies) {
-        movies = isFilterChecked ? movies.filter(movie => movie.duration <= 40) : movies;
-        return movies.filter(movie => movie.nameRU?.toLowerCase().includes(reqText.toLowerCase()) || movie.nameEN?.toLowerCase().includes(reqText.toLowerCase()));
-      }
-
-      if (beatfilmMovies) {
-        setMoviesToShow(searchMovies(beatfilmMovies));
-      } else {
-        MoviesApi.getMovies()
-          .then(data => {
-            setBeatfilmMovies(data);
-            setMoviesToShow(searchMovies(data));
-          })
-          .catch(err => console.log(err));
-      }
-    };
-
-  React.useEffect(() => {
-    checkToken();
-  }, [checkToken]);
-  
-  React.useEffect(() => {
+  // useEffects
+  useEffect(() => {
     if (loggedIn) {
-      MainApi.getUserInfo()
+      mainApi.getUserInfo()
         .then(data => setCurrentUser(data))
-        .catch(err => console.log('Couldnt get user info from the server', err));
-      MainApi.getSavedMovies()
-        .then(data => setSavedMovies(data))
-        .catch(err => console.log('Couldnt get saved cards from the server', err));
+        .catch(err => console.log(err));
+      mainApi.getSavedMovies()
+        .then(data => setSavedMoviesData({ ...savedMoviesData, initial: data }))
+        .catch(err => console.log(err));
     }
   }, [loggedIn]);
 
-  React.useEffect(() => {
-    if (moviesToShow) {
-      getMoviesToShow();
+  useEffect(() => {
+    if (moviesData.initial && moviesData.stableQuery) {
+      searchMovies(moviesData, moviesData.stableQuery);
     }
-  }, [isFilterChecked]);
+  }, [moviesData.initial]);
+
+  useEffect(() => {
+    if (moviesData.initial && moviesData.stableQuery) {
+      searchMovies(moviesData, moviesData.stableQuery);
+    }
+    if (savedMoviesData.initial && savedMoviesData.stableQuery) {
+      searchMovies(savedMoviesData, savedMoviesData.stableQuery);
+    }
+  }, [savedMoviesData.initial]);
+
+  useEffect(() => {
+    if (moviesData.initial && moviesData.stableQuery) {
+      searchMovies(moviesData, moviesData.stableQuery);
+    }
+  }, [moviesData.shortsOnly]);
+
+  useEffect(() => {
+    if (savedMoviesData.initial && savedMoviesData.stableQuery) {
+      searchMovies(savedMoviesData, savedMoviesData.stableQuery);
+    }
+  }, [savedMoviesData.shortsOnly]);
+
+  useEffect(() => {
+    checkToken();
+  }, []);
   
-  function onRegister({ name, email, password }) {
-    MainApi.register(name, email, password)
+  // Auth
+  function handleRegister({ name, email, password }) {
+    mainApi.register(name, email, password)
       .then(() => history.push('/signin'))
       .catch(err => console.log(err));
   }
   
-  function onLogin({ email, password }) {
-    MainApi.authorize(email, password)
+  function handleLogin({ email, password }) {
+    mainApi.authorize(email, password)
       .then(() => setLoggedIn(true))
       .then(() => history.push('/movies'))
       .catch(err => console.log(err));
   }
 
-  function onUpdateUser({ name, email }) {
-    MainApi.setUserInfo(name, email)
+  function handleUpdateUser({ name, email }) {
+    mainApi.setUserInfo(name, email)
       .then(user => setCurrentUser(user))
       .catch(err => console.log(err));
   }
   
-  function onSignOut() {
-    MainApi.unauthorize()
-      .then(() => clearStates())
+  function handleSignOut() {
+    mainApi.unauthorize()
+      .then(() => {
+        clearStates();
+        localStorage.clear();
+      })
       .catch(err => console.log(err));
   }
   
-  function onFilterChange() {
-    setIsFilterChecked(!isFilterChecked);
-  }
-
-  function onSearchFormChange(value) {
-    setReqText(value);
+  // Movies
+  function handleChangeMoviesQuery(value) {
+    setMoviesData({
+      ...moviesData,
+      liveQuery: value
+    });
   }
   
-  function onSearchFormSubmit() {
-    setDisplayedCount(12);
-    getMoviesToShow();
+  function handleChangeMoviesShortsOnly() {
+    setMoviesData({
+      ...moviesData,
+      shortsOnly: !moviesData.shortsOnly
+    });
   }
+  
+  function handleSearchMovies() {
+    const stableQuery = moviesData.liveQuery;
 
-  function onIncreaseDisplayedCount() {
+    setDisplayedCount(12);
+    
+    if (!moviesData.initial) {
+      moviesApi.getMovies()
+        .then(data => setMoviesData({ ...moviesData, initial: data, stableQuery: stableQuery }))
+        .catch(err => console.log(err));
+    } else {
+      searchMovies(moviesData, stableQuery);
+    }
+  }
+  
+  // savedMovies
+  function handleChangeSavedMoviesQuery(value) {
+    setSavedMoviesData({
+      ...savedMoviesData,
+      liveQuery: value
+    });
+  }
+  
+  function handleChangeSavedMoviesShortsOnly() {
+    setSavedMoviesData({
+      ...savedMoviesData,
+      shortsOnly: !savedMoviesData.shortsOnly
+    });
+  }
+  
+  function handleSearchSavedMovies() {
+    const stableQuery = savedMoviesData.liveQuery;
+    searchMovies(savedMoviesData, stableQuery);
+  }
+  
+  // Прочее
+  function handleIncreaseDisplayedCount() {
     setDisplayedCount(displayedCount + 3);
   }
   
-  function addSavedMovie(movie) {
-    MainApi.addSavedMovie(movie)
+  function handleAddMovie(movie) {
+    mainApi.addSavedMovie(movie)
       .then(() => {
-        MainApi.getSavedMovies()
-          .then(data => setSavedMovies(data))
+        mainApi.getSavedMovies()
+          .then(data => setSavedMoviesData({ ...savedMoviesData, initial: data }))
       })
       .catch(err => console.log(err));
   }
 
-  function deleteSavedMovie(movieId) {
-    MainApi.removeSavedMovie(movieId)
+  function handleDeleteMovie(id) {
+    mainApi.removeSavedMovie(id)
       .then(() => {
-        MainApi.getSavedMovies()
-          .then(data => setSavedMovies(data))
+        mainApi.getSavedMovies()
+          .then(data => setSavedMoviesData({ ...savedMoviesData, initial: data }))
       })
       .catch(err => console.log(err));
   }
@@ -163,41 +221,55 @@ function App() {
         <ProtectedRoute
           path="/movies"
           loggedIn={loggedIn}
-          savedMovies={savedMovies}
-          reqText={reqText}
-          isFilterChecked={isFilterChecked}
-          moviesToShow={moviesToShow}
-          onFilterChange={onFilterChange}
-          onSearchFormChange={onSearchFormChange}
-          onSearchFormSubmit={onSearchFormSubmit}
+
+          query={moviesData.liveQuery}
+          shortsOnly={moviesData.shortsOnly}
+          data={setSavedInfo(parseMoviesData(moviesData.searched))}
+          
+          onChangeQuery={handleChangeMoviesQuery}
+          onChangeShortsOnly={handleChangeMoviesShortsOnly}
+          onSearch={handleSearchMovies}
+          
           displayedCount={displayedCount}
-          onIncreaseDisplayedCount={onIncreaseDisplayedCount}
-          addSavedMovie={addSavedMovie}
+          onIncreaseDisplayedCount={handleIncreaseDisplayedCount}
+          
+          onAddMovie={handleAddMovie}
+          onDeleteMovie={handleDeleteMovie}
+
           component={Movies}
         />
 
         <ProtectedRoute
           path="/saved-movies"
           loggedIn={loggedIn}
-          savedMovies={savedMovies}
-          deleteSavedMovie={deleteSavedMovie}
+
+          query={savedMoviesData.liveQuery}
+          shortsOnly={savedMoviesData.shortsOnly}
+          data={savedMoviesData.searched}
+          
+          onChangeQuery={handleChangeSavedMoviesQuery}
+          onChangeShortsOnly={handleChangeSavedMoviesShortsOnly}
+          onSearch={handleSearchSavedMovies}
+          
+          onDeleteMovie={handleDeleteMovie}
+          
           component={SavedMovies}
         />
 
         <ProtectedRoute
           path="/profile"
           loggedIn={loggedIn}
-          onUpdateUser={onUpdateUser}
-          onSignOut={onSignOut}
+          onUpdateUser={handleUpdateUser}
+          onSignOut={handleSignOut}
           component={Profile}
         />
         
         <Route path="/signup">
-          <Register onRegister={onRegister} />
+          <Register onRegister={handleRegister} />
         </Route>
 
         <Route path="/signin">
-          <Login onLogin={onLogin} />
+          <Login onLogin={handleLogin} />
         </Route>
         
         <Route path="*">

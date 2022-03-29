@@ -1,16 +1,16 @@
 import './SearchForm.css';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
-function SearchForm(props) {
+function SearchForm({ query, shortsOnly, onChangeQuery, onChangeShortsOnly, onSearch }) {
   function handleChange(e) {
-    props.onSearchFormChange(e.target.value);
+    onChangeQuery(e.target.value);
   };
 
   function handleSubmit(e) {
     e.preventDefault();
-    props.onSearchFormSubmit();
+    onSearch();
   }
-
+  
   return (
     <section className="search-form">
       <form className="search-form__form search-form__form_width_desktop" onSubmit={handleSubmit}>
@@ -21,7 +21,7 @@ function SearchForm(props) {
             type="text"
             name="search"
             placeholder="Фильм"
-            value={props.query}
+            value={query}
             onChange={handleChange}
             required
           />
@@ -29,7 +29,7 @@ function SearchForm(props) {
         </fieldset>
 
         <div className="search-form__filter">
-          <FilterCheckbox isFilterChecked={props.isFilterChecked} onFilterChange={props.onFilterChange} />
+          <FilterCheckbox shortsOnly={shortsOnly} onChange={onChangeShortsOnly} />
           <span className="search-form__span">Короткометражки</span>
         </div>
       </form>
@@ -41,7 +41,7 @@ function SearchForm(props) {
             type="text"
             name="search"
             placeholder="Фильм"
-            value={props.query}
+            value={query}
             onChange={handleChange}
             required
           />
@@ -49,7 +49,7 @@ function SearchForm(props) {
         </fieldset>
 
         <div className="search-form__filter">
-          <FilterCheckbox isFilterChecked={props.isFilterChecked} onFilterChange={props.onFilterChange} />
+          <FilterCheckbox shortsOnly={shortsOnly} onChange={onChangeShortsOnly} />
           <span className="search-form__span">Короткометражки</span>
         </div>
       </form>

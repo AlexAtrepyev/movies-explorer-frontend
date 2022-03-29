@@ -1,26 +1,14 @@
 import './MoviesCard.css';
 
-function convertDuration(duration) {
-  if (duration < 60) return `${duration % 60}м`;
-  if (duration === 60) return '1ч';
-  if (duration > 60) return `${Math.floor(duration / 60)}ч ${duration % 60}м`;
-}
+import { convertDuration } from '../../utils/utils';
 
-function MoviesCard(props) {
-  const {
-    section,
-    data,
-    isSaved,
-    addSavedMovie,
-    deleteSavedMovie
-  } = props;
-
+function MoviesCard({ section, data, onAddMovie, onDeleteMovie }) {
   function handleAddMovie() {
-    addSavedMovie(data)
+    onAddMovie(data)
   }
 
   function handleDeleteMovie() {
-    deleteSavedMovie(data.movieId);
+    onDeleteMovie(data._id);
   }
 
   return (
@@ -33,8 +21,11 @@ function MoviesCard(props) {
         <span className="movies-card__duration">{convertDuration(data.duration)}</span>
       </div>
       {section === 'movies' ?
-        isSaved ? (
-          <div className="movies-card__saved-label corner-elem" />
+        data.isSaved ? (
+          <button
+            className="movies-card__btn movies-card__btn_type_saved corner-elem"
+            onClick={handleDeleteMovie}
+          />
         ) : (
           <button
             className="movies-card__btn movies-card__btn_type_add corner-elem"

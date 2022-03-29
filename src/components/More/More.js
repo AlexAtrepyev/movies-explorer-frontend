@@ -1,11 +1,11 @@
 import './More.css';
 
-function More(props) {
+function More({ visible, onIncreaseDisplayedCount }) {
   return (
     <>
-      {props.visible ? (
+      {visible ? (
         <div className="more">
-          <button className="more__button" onClick={props.onIncreaseMoviesCount} >Ещё</button>
+          <button className="more__button" onClick={onIncreaseDisplayedCount} >Ещё</button>
         </div>
       ) : (
         <div className="more more_inactive" />

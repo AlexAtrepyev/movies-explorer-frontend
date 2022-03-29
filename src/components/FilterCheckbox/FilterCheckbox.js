@@ -1,14 +1,14 @@
 import React from 'react';
 import './FilterCheckbox.css';
 
-function FilterCheckbox(props) {
+function FilterCheckbox({ shortsOnly, onChange }) {
   return (
     <div className="filter-checkbox">
       <input
         className="filter-checkbox__checkbox"
         type="checkbox"
-        checked={props.isFilterChecked}
-        onChange={props.onFilterChange}
+        checked={shortsOnly}
+        onChange={onChange}
       />
       <div className="filter-checkbox__background" />
       <div className="filter-checkbox__circle" />
