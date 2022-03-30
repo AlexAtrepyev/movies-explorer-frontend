@@ -14,7 +14,7 @@ import moviesApi from '../../utils/MoviesApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import useLocalStorageState from '../../hooks/useLocalStorageState';
 
-import { dataTemplate, filterByQuery, filterByCheckbox, parseMoviesData, findSaved } from '../../utils/utils';
+import { getDisplayedCount, dataTemplate, filterByQuery, filterByCheckbox, parseMoviesData, findSaved } from '../../utils/utils';
 
 function App() {
   const history = useHistory();
@@ -24,13 +24,18 @@ function App() {
   
   const [moviesData, setMoviesData] = useLocalStorageState('moviesData', dataTemplate);
   const [savedMoviesData, setSavedMoviesData] = useLocalStorageState('savedMoviesData', dataTemplate);
-
-  const [displayedCount, setDisplayedCount] = useState(12);
-
+  
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [displayedCount, setDisplayedCount] = useState(getDisplayedCount(window.innerWidth));
   
   // funcs
+  function updateWindowWidth() {
+    setWindowWidth(window.innerWidth);
+  }
+  
   function checkToken() {
     mainApi.getUserInfo()
       .then(() => setLoggedIn(true))
@@ -67,10 +72,21 @@ function App() {
     setCurrentUser(null);
     setMoviesData(dataTemplate);
     setSavedMoviesData(dataTemplate);
-    setDisplayedCount(12);
+    setDisplayedCount(getDisplayedCount(windowWidth));
   }
   
   // useEffects
+  useEffect(() => {
+    window.addEventListener('resize', updateWindowWidth);
+    return () => {
+      window.removeEventListener('resize', updateWindowWidth);
+    }
+  }, []);
+
+  useEffect(() => {
+    setDisplayedCount(getDisplayedCount(windowWidth));
+  }, [windowWidth]);
+
   useEffect(() => {
     if (loggedIn) {
       mainApi.getUserInfo()
@@ -159,7 +175,7 @@ function App() {
   
   function handleSearchMovies() {
     setApiError(null);
-    setDisplayedCount(12);
+    setDisplayedCount(getDisplayedCount(windowWidth));
 
     const stableQuery = moviesData.liveQuery;
     if (!moviesData.initial) {
@@ -199,7 +215,8 @@ function App() {
   
   // Прочее
   function handleIncreaseDisplayedCount() {
-    setDisplayedCount(displayedCount + 3);
+    const extraCount = getDisplayedCount(windowWidth) < 12 ? 2 : 3;
+    setDisplayedCount(displayedCount + extraCount);
   }
   
   function handleAddMovie(movie) {

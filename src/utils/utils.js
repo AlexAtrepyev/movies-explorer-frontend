@@ -1,3 +1,17 @@
+export function getDisplayedCount(width) {
+  let count = 12;
+  if (width > 0) {
+    count = 5; 
+  }
+  if (width > 480) {
+    count = 8; 
+  }
+  if (width > 768) {
+    count = 12; 
+  }
+  return count;
+}
+
 export const dataTemplate = {
   initial: null,
   liveQuery: '',
