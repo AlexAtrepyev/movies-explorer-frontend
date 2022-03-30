@@ -15,7 +15,9 @@ function Movies({
   displayedCount,
   onIncreaseDisplayedCount,
   onAddMovie,
-  onDeleteMovie
+  onDeleteMovie,
+  isLoading,
+  apiError
 }) {
   return (
     <>
@@ -32,6 +34,8 @@ function Movies({
         data={data?.slice(0, displayedCount)}
         onAddMovie={onAddMovie}
         onDeleteMovie={onDeleteMovie}
+        isLoading={isLoading}
+        apiError={apiError}
       />
       <More
         visible={data?.length > displayedCount}

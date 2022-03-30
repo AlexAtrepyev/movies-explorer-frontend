@@ -26,6 +26,9 @@ function App() {
   const [savedMoviesData, setSavedMoviesData] = useLocalStorageState('savedMoviesData', dataTemplate);
 
   const [displayedCount, setDisplayedCount] = useState(12);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
   
   // funcs
   function checkToken() {
@@ -45,6 +48,7 @@ function App() {
       stableQuery: stableQuery,
       searched: searched
     });
+    setIsLoading(false);
   };
 
   function setSavedInfo(data) {
@@ -154,14 +158,18 @@ function App() {
   }
   
   function handleSearchMovies() {
-    const stableQuery = moviesData.liveQuery;
-
+    setApiError(null);
     setDisplayedCount(12);
-    
+
+    const stableQuery = moviesData.liveQuery;
     if (!moviesData.initial) {
+      setIsLoading(true);
       moviesApi.getMovies()
         .then(data => setMoviesData({ ...moviesData, initial: data, stableQuery: stableQuery }))
-        .catch(err => console.log(err));
+        .catch(err => {
+          setApiError(err);
+          setIsLoading(false);
+        });
     } else {
       searchMovies(moviesData, stableQuery);
     }
@@ -183,6 +191,8 @@ function App() {
   }
   
   function handleSearchSavedMovies() {
+    setApiError(null);
+
     const stableQuery = savedMoviesData.liveQuery;
     searchMovies(savedMoviesData, stableQuery);
   }
@@ -193,21 +203,23 @@ function App() {
   }
   
   function handleAddMovie(movie) {
+    setApiError(null);
     mainApi.addSavedMovie(movie)
       .then(() => {
         mainApi.getSavedMovies()
           .then(data => setSavedMoviesData({ ...savedMoviesData, initial: data }))
       })
-      .catch(err => console.log(err));
+      .catch(err => setApiError(err));
   }
 
   function handleDeleteMovie(id) {
+    setApiError(null);
     mainApi.removeSavedMovie(id)
       .then(() => {
         mainApi.getSavedMovies()
           .then(data => setSavedMoviesData({ ...savedMoviesData, initial: data }))
       })
-      .catch(err => console.log(err));
+      .catch(err => setApiError(err));
   }
   
   return (
@@ -236,6 +248,9 @@ function App() {
           onAddMovie={handleAddMovie}
           onDeleteMovie={handleDeleteMovie}
 
+          isLoading={isLoading}
+          apiError={apiError}
+
           component={Movies}
         />
 
@@ -252,6 +267,9 @@ function App() {
           onSearch={handleSearchSavedMovies}
           
           onDeleteMovie={handleDeleteMovie}
+
+          isLoading={isLoading}
+          apiError={apiError}
           
           component={SavedMovies}
         />

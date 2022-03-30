@@ -11,7 +11,9 @@ function SavedMovies({
   onChangeQuery,
   onChangeShortsOnly,
   onSearch,
-  onDeleteMovie
+  onDeleteMovie,
+  isLoading,
+  apiError
 }) {
   return (
     <>
@@ -27,6 +29,8 @@ function SavedMovies({
         section="saved-movies"
         data={data}
         onDeleteMovie={onDeleteMovie}
+        isLoading={isLoading}
+        apiError={apiError}
       />
       <Footer />
     </>

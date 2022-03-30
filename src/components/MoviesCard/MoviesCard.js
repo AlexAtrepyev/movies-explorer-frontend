@@ -12,14 +12,16 @@ function MoviesCard({ section, data, onAddMovie, onDeleteMovie }) {
   }
 
   return (
-    <li className="movies-card">
-      <div className="movies-card__img-container">
-        <img className="movies-card__img" src={data.image} alt="Постер фильма" />
-      </div>
-      <div className="movies-card__info-container">
-        <h2 className="movies-card__title">{data.nameRU}</h2>
-        <span className="movies-card__duration">{convertDuration(data.duration)}</span>
-      </div>
+    <li className="movies-card" >
+      <a className="movies-card__link" href={data.trailer} target="_blank" rel="noopener noreferrer">
+        <div className="movies-card__img-container">
+          <img className="movies-card__img" src={data.image} alt="Постер фильма" />
+        </div>
+        <div className="movies-card__info-container">
+          <h2 className="movies-card__title">{data.nameRU}</h2>
+          <span className="movies-card__duration">{convertDuration(data.duration)}</span>
+        </div>
+      </a>
       {section === 'movies' ?
         data.isSaved ? (
           <button
@@ -33,13 +35,12 @@ function MoviesCard({ section, data, onAddMovie, onDeleteMovie }) {
           >
             Сохранить
           </button>
-        )
-      : (
-        <button
-          className="movies-card__btn movies-card__btn_type_delete corner-elem"
-          onClick={handleDeleteMovie}
-        />
-      )}
+        ) : (
+          <button
+            className="movies-card__btn movies-card__btn_type_delete corner-elem"
+            onClick={handleDeleteMovie}
+          />
+        )}
     </li>
   );
 }
