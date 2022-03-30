@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AppLogo from '../AppLogo/AppLogo';
 import Form from '../Form/Form';
 
-function Register(props) {
+function Register({ onRegister }) {
   const inputList = [
     {key: 1, label: 'Имя', type: 'text', name: 'name', placeholder: 'Виталий'},
     {key: 2, label: 'E-mail', type: 'email', name: 'email', placeholder: 'pochta@yandex.ru'},
@@ -16,10 +16,10 @@ function Register(props) {
         <AppLogo />
         <h1 className="register__title">Добро пожаловать!</h1>
         <Form
-          inputList={inputList}
+          inputs={inputList}
           margin={'margin_s'}
           submitText='Зарегистрироваться'
-          onSubmit={props.onRegister}
+          onSubmit={onRegister}
         />
         <div className="register__redirection">
           Уже зарегистрированы?

@@ -16,9 +16,7 @@
 }
 
 .profile-form__field:last-of-type {
-  padding: 0;
   border-bottom: none;
-  margin: 0;
 }
 
 .profile-form__label {
@@ -38,6 +36,20 @@
   border: none;
 }
 
+.profile-form__input_incorrect {
+  color: #ff4062;
+}
+
+.profile-form__error {
+  font-size: 10px;
+  line-height: 12px;
+  color: #ff4062;
+}
+
+.profile-form__error_hidden {
+  visibility: hidden;
+}
+
 .profile-form__submit {
   font-size: 13px;
   line-height: 16px;
@@ -52,6 +64,12 @@
 
 .profile-form__submit:hover {
   opacity: .7;
+}
+
+.profile-form__submit_inactive {
+  opacity: .5;
+  pointer-events: none;
+  user-select: none;
 }
 
 @media screen and (max-width: 768px) {

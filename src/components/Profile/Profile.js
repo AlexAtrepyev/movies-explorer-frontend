@@ -3,7 +3,7 @@ import './Profile.css';
 import ProfileForm from '../ProfileForm/ProfileForm';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile(props) {
+function Profile({ onUpdateUser, onSignOut }) {
   const currentUser = React.useContext(CurrentUserContext);
 
   const inputList = [
@@ -16,12 +16,13 @@ function Profile(props) {
       <h1 className="profile__title">{`Привет, ${currentUser.name}!`}</h1>
 
       <ProfileForm
-        inputList={inputList}
+        currentUser={currentUser}
+        inputs={inputList}
         submitText='Редактировать'
-        onSubmit={props.onUpdateUser}
+        onSubmit={onUpdateUser}
       />
 
-      <button className="profile__logout-btn" onClick={props.onSignOut}>Выйти из аккаунта</button>
+      <button className="profile__logout-btn" onClick={onSignOut}>Выйти из аккаунта</button>
     </section>
   );
 }
