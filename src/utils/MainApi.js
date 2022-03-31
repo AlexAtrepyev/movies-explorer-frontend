@@ -90,5 +90,4 @@ class MainApi {
   }
 }
 
-export default new MainApi('http://localhost:3000');
-//https://backend.mesto.nomoredomains.monster
+export default new MainApi('api.movieretrieval.nomoredomains.club');
