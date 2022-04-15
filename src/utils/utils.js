@@ -1,15 +1,28 @@
-export function getDisplayedCount(width) {
-  let count = 12;
+export function getLayout(width) {
+  let layout = null;
   if (width > 0) {
-    count = 5; 
+    layout = 'mobile'; 
   }
-  if (width > 480) {
-    count = 8; 
+  if (width > 425) {
+    layout = 'tablet'; 
   }
   if (width > 768) {
-    count = 12; 
+    layout = 'desktop'; 
   }
-  return count;
+  return layout;
+}
+
+export function getDisplayedCount(layout) {
+  switch (layout) {
+    case 'desktop':
+      return 12;
+    case 'tablet':
+      return 8;
+    case 'mobile':
+      return 5;
+    default:
+      return 12;
+  }
 }
 
 export const dataTemplate = {

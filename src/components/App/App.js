@@ -1,6 +1,24 @@
 import { useState, useEffect } from 'react';
 import { useHistory, Route, Switch } from 'react-router-dom';
-import './App.css';
+
+import useLocalStorageState from '../../hooks/useLocalStorageState';
+
+import { CurrentUserContext } from '../../services/currentUserContext';
+import { LayoutContext } from '../../services/layoutContext';
+import { LoggedInContext } from '../../services/loggedInContext';
+
+import mainApi from '../../utils/MainApi';
+import moviesApi from '../../utils/MoviesApi';
+import {
+  getLayout,
+  getDisplayedCount,
+  dataTemplate,
+  filterByQuery,
+  filterByCheckbox,
+  parseMoviesData,
+  findSaved
+} from '../../utils/utils';
+
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -8,32 +26,27 @@ import Profile from '../Profile/Profile';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import PageNotFound from '../PageNotFound/PageNotFound';
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import mainApi from '../../utils/MainApi';
-import moviesApi from '../../utils/MoviesApi';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
-import useLocalStorageState from '../../hooks/useLocalStorageState';
-
-import { getDisplayedCount, dataTemplate, filterByQuery, filterByCheckbox, parseMoviesData, findSaved } from '../../utils/utils';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   const history = useHistory();
-
-  const [loggedIn, setLoggedIn] = useState(false);
+  
   const [currentUser, setCurrentUser] = useLocalStorageState('currentUser', null);
+  const [layout, setLayout] = useState(getLayout(window.innerWidth));
+  const [loggedIn, setLoggedIn] = useState(false);
   
   const [moviesData, setMoviesData] = useLocalStorageState('moviesData', dataTemplate);
   const [savedMoviesData, setSavedMoviesData] = useLocalStorageState('savedMoviesData', dataTemplate);
   
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
-
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [displayedCount, setDisplayedCount] = useState(getDisplayedCount(window.innerWidth));
+  
+  
+  const [displayedCount, setDisplayedCount] = useState(getDisplayedCount(getLayout(window.innerWidth)));
   
   // funcs
-  function updateWindowWidth() {
-    setWindowWidth(window.innerWidth);
+  function updateLayout() {
+    setLayout(getLayout(window.innerWidth));
   }
   
   function checkToken() {
@@ -72,20 +85,20 @@ function App() {
     setCurrentUser(null);
     setMoviesData(dataTemplate);
     setSavedMoviesData(dataTemplate);
-    setDisplayedCount(getDisplayedCount(windowWidth));
+    setDisplayedCount(getDisplayedCount(layout));
   }
   
   // useEffects
   useEffect(() => {
-    window.addEventListener('resize', updateWindowWidth);
+    window.addEventListener('resize', updateLayout);
     return () => {
-      window.removeEventListener('resize', updateWindowWidth);
+      window.removeEventListener('resize', updateLayout);
     }
   }, []);
 
   useEffect(() => {
-    setDisplayedCount(getDisplayedCount(windowWidth));
-  }, [windowWidth]);
+    setDisplayedCount(getDisplayedCount(layout));
+  }, [layout]);
 
   useEffect(() => {
     if (loggedIn) {
@@ -175,7 +188,7 @@ function App() {
   
   function handleSearchMovies() {
     setApiError(null);
-    setDisplayedCount(getDisplayedCount(windowWidth));
+    setDisplayedCount(getDisplayedCount(layout));
 
     const stableQuery = moviesData.liveQuery;
     if (!moviesData.initial) {
@@ -215,7 +228,7 @@ function App() {
   
   // Прочее
   function handleIncreaseDisplayedCount() {
-    const extraCount = getDisplayedCount(windowWidth) < 12 ? 2 : 3;
+    const extraCount = getDisplayedCount(layout) < 12 ? 2 : 3; // ВЫНЕСТИ В КОНСТАНТЫ
     setDisplayedCount(displayedCount + extraCount);
   }
   
@@ -241,77 +254,79 @@ function App() {
   
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <Switch>
+      <LayoutContext.Provider value={layout}>
+        <LoggedInContext.Provider value={loggedIn}>
+          <Switch>
 
-        <Route exact path="/">
-          <Main loggedIn={loggedIn} />
-        </Route>
+            <Route exact path="/">
+              <Main />
+            </Route>
 
-        <ProtectedRoute
-          path="/movies"
-          loggedIn={loggedIn}
+            <ProtectedRoute
+              path="/movies"
 
-          query={moviesData.liveQuery}
-          shortsOnly={moviesData.shortsOnly}
-          data={setSavedInfo(parseMoviesData(moviesData.searched))}
-          
-          onChangeQuery={handleChangeMoviesQuery}
-          onChangeShortsOnly={handleChangeMoviesShortsOnly}
-          onSearch={handleSearchMovies}
-          
-          displayedCount={displayedCount}
-          onIncreaseDisplayedCount={handleIncreaseDisplayedCount}
-          
-          onAddMovie={handleAddMovie}
-          onDeleteMovie={handleDeleteMovie}
+              query={moviesData.liveQuery}
+              shortsOnly={moviesData.shortsOnly}
+              data={setSavedInfo(parseMoviesData(moviesData.searched))}
+              
+              onChangeQuery={handleChangeMoviesQuery}
+              onChangeShortsOnly={handleChangeMoviesShortsOnly}
+              onSearch={handleSearchMovies}
+              
+              displayedCount={displayedCount}
+              onIncreaseDisplayedCount={handleIncreaseDisplayedCount}
+              
+              onAddMovie={handleAddMovie}
+              onDeleteMovie={handleDeleteMovie}
 
-          isLoading={isLoading}
-          apiError={apiError}
+              isLoading={isLoading}
+              apiError={apiError}
 
-          component={Movies}
-        />
+              component={Movies}
+            />
 
-        <ProtectedRoute
-          path="/saved-movies"
-          loggedIn={loggedIn}
+            <ProtectedRoute
+              path="/saved-movies"
 
-          query={savedMoviesData.liveQuery}
-          shortsOnly={savedMoviesData.shortsOnly}
-          data={savedMoviesData.searched}
-          
-          onChangeQuery={handleChangeSavedMoviesQuery}
-          onChangeShortsOnly={handleChangeSavedMoviesShortsOnly}
-          onSearch={handleSearchSavedMovies}
-          
-          onDeleteMovie={handleDeleteMovie}
+              query={savedMoviesData.liveQuery}
+              shortsOnly={savedMoviesData.shortsOnly}
+              data={savedMoviesData.searched}
+              
+              onChangeQuery={handleChangeSavedMoviesQuery}
+              onChangeShortsOnly={handleChangeSavedMoviesShortsOnly}
+              onSearch={handleSearchSavedMovies}
+              
+              onDeleteMovie={handleDeleteMovie}
 
-          isLoading={isLoading}
-          apiError={apiError}
-          
-          component={SavedMovies}
-        />
+              isLoading={isLoading}
+              apiError={apiError}
+              
+              component={SavedMovies}
+            />
 
-        <ProtectedRoute
-          path="/profile"
-          loggedIn={loggedIn}
-          onUpdateUser={handleUpdateUser}
-          onSignOut={handleSignOut}
-          component={Profile}
-        />
-        
-        <Route path="/signup">
-          <Register onRegister={handleRegister} />
-        </Route>
+            <ProtectedRoute
+              path="/profile"
+              
+              onUpdateUser={handleUpdateUser}
+              onSignOut={handleSignOut}
+              component={Profile}
+            />
+            
+            <Route path="/signup">
+              <Register onRegister={handleRegister} />
+            </Route>
 
-        <Route path="/signin">
-          <Login onLogin={handleLogin} />
-        </Route>
-        
-        <Route path="*">
-          <PageNotFound />
-        </Route>
+            <Route path="/signin">
+              <Login onLogin={handleLogin} />
+            </Route>
+            
+            <Route path="*">
+              <PageNotFound />
+            </Route>
 
-      </Switch>
+          </Switch>
+        </LoggedInContext.Provider>
+      </LayoutContext.Provider>
     </CurrentUserContext.Provider>
   );
 }

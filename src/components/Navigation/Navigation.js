@@ -1,16 +1,47 @@
 import './Navigation.css';
+
+import { useContext } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
-function Navigation(props) {
+import { LayoutContext } from '../../services/layoutContext';
+import { LoggedInContext } from '../../services/loggedInContext';
+
+import Account from '../Account/Account';
+
+function Navigation() {
+  const layout = useContext(LayoutContext);
+  const loggedIn = useContext(LoggedInContext);
+
+  const navClass = `nav${loggedIn ? ' nav_logged_in' : ''}`;
+  
   return (
-    <nav className={`nav ${props.location}__nav`}>
-      {props.isLogged ? (
+    <nav className={navClass}>
+      {loggedIn ? (
         <>
-          {props.location === 'menu' && (
-            <NavLink className="nav__link nav__link_logged_in" exact to="/" activeClassName="nav__link_active">Главная</NavLink>
-          )}
-          <NavLink className="nav__link nav__link_logged_in" to="/movies" activeClassName="nav__link_active">Фильмы</NavLink>
-          <NavLink className="nav__link nav__link_logged_in" to="/saved-movies" activeClassName="nav__link_active">Сохранённые фильмы</NavLink>
+          {layout !== 'desktop' &&
+            <NavLink
+              className="nav__link nav__link_logged_in"
+              activeClassName="nav__link_active"
+              exact to="/"
+            >
+              Главная
+            </NavLink>
+          }
+          <NavLink
+            className="nav__link nav__link_logged_in"
+            activeClassName="nav__link_active"
+            to="/movies"
+          >
+            Фильмы
+          </NavLink>
+          <NavLink
+            className="nav__link nav__link_logged_in"
+            activeClassName="nav__link_active"
+            to="/saved-movies"
+          >
+            Сохранённые фильмы
+          </NavLink>
+          <Account />
         </>
       ) : (
         <>

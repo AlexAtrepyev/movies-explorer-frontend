@@ -5,7 +5,6 @@ import More from '../More/More';
 import Footer from '../Footer/Footer';
 
 function Movies({
-  loggedIn,
   query,
   shortsOnly,
   data,
@@ -21,7 +20,7 @@ function Movies({
 }) {
   return (
     <>
-      <Header loggedIn={loggedIn} />
+      <Header />
       <SearchForm
         query={query}
         shortsOnly={shortsOnly}

@@ -4,7 +4,6 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 
 function SavedMovies({
-  loggedIn,
   query,
   shortsOnly,
   data,
@@ -17,7 +16,7 @@ function SavedMovies({
 }) {
   return (
     <>
-      <Header loggedIn={loggedIn} />
+      <Header />
       <SearchForm
         query={query}
         shortsOnly={shortsOnly}

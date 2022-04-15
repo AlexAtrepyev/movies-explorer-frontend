@@ -1,5 +1,7 @@
 import './Account.css';
+
 import { Link } from 'react-router-dom';
+
 import accountLogo from '../../images/account-logo.svg';
 
 function Account() {

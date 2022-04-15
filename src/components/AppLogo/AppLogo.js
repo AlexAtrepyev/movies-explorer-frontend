@@ -1,5 +1,7 @@
 import './AppLogo.css';
+
 import { Link } from 'react-router-dom';
+
 import appLogo from '../../images/app-logo.svg';
 
 function AppLogo() {

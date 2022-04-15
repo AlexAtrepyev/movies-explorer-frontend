@@ -1,8 +1,8 @@
 import './Menu.css';
-import Navigation from '../Navigation/Navigation';
-import Account from '../Account/Account';
 
-function Menu(props) {
+import Navigation from '../Navigation/Navigation';
+
+function Menu() {
   return (
     <div className="menu">
       <input className="menu__checkbox" type="checkbox" />
@@ -11,8 +11,7 @@ function Menu(props) {
       <div className="menu__bar" id="bar3" />
       <div className="menu__overlay" />
       <div className="menu__content">
-        <Navigation isLogged={props.isLogged} location="menu" />
-        <Account />
+        <Navigation />
       </div>
     </div>
   );
