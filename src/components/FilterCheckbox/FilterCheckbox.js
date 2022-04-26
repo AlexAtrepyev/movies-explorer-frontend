@@ -1,5 +1,6 @@
-import React from 'react';
 import './FilterCheckbox.css';
+
+import React from 'react';
 
 function FilterCheckbox({ shortsOnly, onChange }) {
   return (

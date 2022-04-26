@@ -7,12 +7,17 @@ import { CurrentUserContext } from '../../services/currentUserContext';
 import { LayoutContext } from '../../services/layoutContext';
 import { LoggedInContext } from '../../services/loggedInContext';
 
+import {
+  DATA_TEMPLATE,
+  DESKTOP_CARDS_COUNT,
+  MOBILE_EXTRA_CARDS_COUNT,
+  DESKTOP_EXTRA_CARDS_COUNT
+} from '../../utils/constants';
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
 import {
   getLayout,
   getDisplayedCount,
-  dataTemplate,
   filterByQuery,
   filterByCheckbox,
   parseMoviesData,
@@ -35,8 +40,8 @@ function App() {
   const [layout, setLayout] = useState(getLayout(window.innerWidth));
   const [loggedIn, setLoggedIn] = useState(false);
   
-  const [moviesData, setMoviesData] = useLocalStorageState('moviesData', dataTemplate);
-  const [savedMoviesData, setSavedMoviesData] = useLocalStorageState('savedMoviesData', dataTemplate);
+  const [moviesData, setMoviesData] = useLocalStorageState('moviesData', DATA_TEMPLATE);
+  const [savedMoviesData, setSavedMoviesData] = useLocalStorageState('savedMoviesData', DATA_TEMPLATE);
   
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
@@ -64,8 +69,7 @@ function App() {
     func({
       ...data,
       stableQuery: stableQuery,
-      searched: searched,
-      hasBeenSearched: true
+      searched: searched
     });
     setIsLoading(false);
   };
@@ -84,8 +88,8 @@ function App() {
   function clearStates() {
     setLoggedIn(false);
     setCurrentUser(null);
-    setMoviesData(dataTemplate);
-    setSavedMoviesData(dataTemplate);
+    setMoviesData(DATA_TEMPLATE);
+    setSavedMoviesData(DATA_TEMPLATE);
     setDisplayedCount(getDisplayedCount(layout));
   }
 
@@ -161,7 +165,7 @@ function App() {
   function handleRegister({ name, email, password }) {
     resetApiError();
     mainApi.register(name, email, password)
-      .then(() => history.push('/signin'))
+      .then(() => handleLogin({ email, password }))
       .catch(err => setApiError(err));
   }
   
@@ -242,14 +246,14 @@ function App() {
   
   function handleSearchSavedMovies() {
     setApiError(null);
-
     const stableQuery = savedMoviesData.liveQuery;
+    savedMoviesData.hasBeenSearched = true;
     searchMovies(savedMoviesData, stableQuery);
   }
   
   // Прочее
   function handleIncreaseDisplayedCount() {
-    const extraCount = getDisplayedCount(layout) < 12 ? 2 : 3; // ВЫНЕСТИ В КОНСТАНТЫ
+    const extraCount = getDisplayedCount(layout) < DESKTOP_CARDS_COUNT ? MOBILE_EXTRA_CARDS_COUNT : DESKTOP_EXTRA_CARDS_COUNT;
     setDisplayedCount(displayedCount + extraCount);
   }
   

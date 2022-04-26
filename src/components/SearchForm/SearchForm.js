@@ -1,4 +1,5 @@
 import './SearchForm.css';
+
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 
 function SearchForm({ query, shortsOnly, onChangeQuery, onChangeShortsOnly, onSearch }) {

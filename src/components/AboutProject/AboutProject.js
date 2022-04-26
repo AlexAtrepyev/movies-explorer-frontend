@@ -1,4 +1,5 @@
 import './AboutProject.css';
+
 import Article from '../Article/Article';
 import Timeline from '../Timeline/Timeline';
 

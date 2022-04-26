@@ -4,7 +4,17 @@ import AppLogo from '../AppLogo/AppLogo';
 import Form from '../Form/Form';
 import Redirection from '../Redirection/Redirection';
 
-function Auth({ title, fields, submitText, onSubmit, apiError, resetApiError, redirectionText, redirectionLinkText, redirectionLink }) {
+function Auth({
+  title,
+  fields,
+  submitText,
+  onSubmit,
+  apiError,
+  resetApiError,
+  redirectionText,
+  redirectionLinkText,
+  redirectionLink
+}) {
   return (
     <section className="auth">
       <div className="auth__container">

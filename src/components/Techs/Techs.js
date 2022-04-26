@@ -1,4 +1,5 @@
 import './Techs.css';
+
 import Article from '../Article/Article';
 
 function Techs() {
