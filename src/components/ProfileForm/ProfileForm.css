@@ -19,7 +19,7 @@
   opacity: 1;
 }
 
-.profile-form__sucess {
+.profile-form__success {
   height: 12px;
   font-size: 10px;
   line-height: 12px;
@@ -27,7 +27,7 @@
   opacity: 0;
 }
 
-.profile-form__sucess_visible {
+.profile-form__success_visible {
   opacity: 1;
 }
 

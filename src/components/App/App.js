@@ -40,8 +40,7 @@ function App() {
   
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
-  const [sucess, setSucess] = useState(false);
-  
+  const [success, setSuccess] = useState(false);
   
   const [displayedCount, setDisplayedCount] = useState(getDisplayedCount(getLayout(window.innerWidth)));
   
@@ -65,7 +64,8 @@ function App() {
     func({
       ...data,
       stableQuery: stableQuery,
-      searched: searched
+      searched: searched,
+      hasBeenSearched: true
     });
     setIsLoading(false);
   };
@@ -91,6 +91,10 @@ function App() {
 
   function resetApiError() {
     setApiError(null);
+  }
+
+  function resetSavedMoviesData() {
+    setSavedMoviesData({ ...savedMoviesData, liveQuery: '', stableQuery: '', shortsOnly: false })
   }
   
   // useEffects
@@ -126,7 +130,7 @@ function App() {
     if (moviesData.initial && moviesData.stableQuery) {
       searchMovies(moviesData, moviesData.stableQuery);
     }
-    if (savedMoviesData.initial && savedMoviesData.stableQuery) {
+    if (savedMoviesData.initial) {
       searchMovies(savedMoviesData, savedMoviesData.stableQuery);
     }
   }, [savedMoviesData.initial]);
@@ -138,7 +142,13 @@ function App() {
   }, [moviesData.shortsOnly]);
 
   useEffect(() => {
-    if (savedMoviesData.initial && savedMoviesData.stableQuery) {
+    if (savedMoviesData.initial) {
+      searchMovies(savedMoviesData, savedMoviesData.stableQuery);
+    }
+  }, [savedMoviesData.stableQuery]);
+
+  useEffect(() => {
+    if (savedMoviesData.initial) {
       searchMovies(savedMoviesData, savedMoviesData.stableQuery);
     }
   }, [savedMoviesData.shortsOnly]);
@@ -168,7 +178,7 @@ function App() {
     mainApi.setUserInfo(name, email)
       .then(user => {
         setCurrentUser(user);
-        setSucess(true);
+        setSuccess(true);
       })
       .catch(err => setApiError(err));
   }
@@ -205,7 +215,7 @@ function App() {
     if (!moviesData.initial) {
       setIsLoading(true);
       moviesApi.getMovies()
-        .then(data => setMoviesData({ ...moviesData, initial: data, stableQuery: stableQuery }))
+        .then(data => setMoviesData({ ...moviesData, initial: data, stableQuery: stableQuery, hasBeenSearched: true }))
         .catch(err => {
           setApiError(err);
           setIsLoading(false);
@@ -292,6 +302,7 @@ function App() {
 
               isLoading={isLoading}
               apiError={apiError}
+              hasBeenSearched={moviesData.hasBeenSearched}
 
               component={Movies}
             />
@@ -306,11 +317,13 @@ function App() {
               onChangeQuery={handleChangeSavedMoviesQuery}
               onChangeShortsOnly={handleChangeSavedMoviesShortsOnly}
               onSearch={handleSearchSavedMovies}
+              resetSavedMoviesData={resetSavedMoviesData}
               
               onDeleteMovie={handleDeleteMovie}
 
               isLoading={isLoading}
               apiError={apiError}
+              hasBeenSearched={savedMoviesData.hasBeenSearched}
               
               component={SavedMovies}
             />
@@ -319,12 +332,12 @@ function App() {
               path="/profile"
 
               apiError={apiError}
-              sucess={sucess}
+              success={success}
               
               onUpdateUser={handleUpdateUser}
               onSignOut={handleSignOut}
               resetApiError={resetApiError}
-              setSucess={setSucess}
+              setSuccess={setSuccess}
 
               component={Profile}
             />

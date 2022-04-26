@@ -1,8 +1,9 @@
 import './MoviesCardList.css';
+
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Preloader from '../Preloader/Preloader';
 
-function MoviesCardList({ section, data, onAddMovie, onDeleteMovie, isLoading, apiError }) {
+function MoviesCardList({ section, data, onAddMovie, onDeleteMovie, isLoading, apiError, hasBeenSearched }) {
   let sectionClass = 'movies-card-list';
   if (section === 'saved-movies') sectionClass += ' saved-movies__movies-card-list';
 
@@ -13,7 +14,7 @@ function MoviesCardList({ section, data, onAddMovie, onDeleteMovie, isLoading, a
       ) : (
         apiError ? (
           <p className="movies-card-list__info">
-            Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз
+            Невозможно сохранить карточку
           </p>
         ) : (
           data?.length > 0 ? (
@@ -29,7 +30,7 @@ function MoviesCardList({ section, data, onAddMovie, onDeleteMovie, isLoading, a
               ))}
             </ul>
           ) : (
-            <p className="movies-card-list__info">Ничего не найдено</p>
+            <p className="movies-card-list__info">{hasBeenSearched && 'Ничего не найдено'}</p> 
           )
         )
       )}

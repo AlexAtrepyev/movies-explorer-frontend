@@ -7,7 +7,7 @@ import { CurrentUserContext } from '../../services/currentUserContext';
 import Header from '../Header/Header';
 import ProfileForm from '../ProfileForm/ProfileForm';
 
-function Profile({ apiError, sucess, onUpdateUser, onSignOut, resetApiError, setSucess }) {
+function Profile({ apiError, success, onUpdateUser, onSignOut, resetApiError, setSuccess }) {
   const currentUser = useContext(CurrentUserContext);
   
   const inputList = [
@@ -29,8 +29,8 @@ function Profile({ apiError, sucess, onUpdateUser, onSignOut, resetApiError, set
           inputs={inputList}
           apiError={apiError}
           resetApiError={resetApiError}
-          sucess={sucess}
-          setSucess={setSucess}
+          success={success}
+          setSuccess={setSuccess}
           submitText='Редактировать'
           onSubmit={onUpdateUser}
         />

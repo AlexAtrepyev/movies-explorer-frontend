@@ -30,7 +30,8 @@ export const dataTemplate = {
   liveQuery: '',
   stableQuery: '',
   shortsOnly: false,
-  searched: null
+  searched: null,
+  hasBeenSearched: false
 }
 
 export function filterByQuery(data, query) {

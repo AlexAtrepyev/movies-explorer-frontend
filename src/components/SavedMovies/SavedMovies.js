@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -10,10 +12,16 @@ function SavedMovies({
   onChangeQuery,
   onChangeShortsOnly,
   onSearch,
+  resetSavedMoviesData,
   onDeleteMovie,
   isLoading,
-  apiError
+  apiError,
+  hasBeenSearched
 }) {
+  useEffect(() => {
+    resetSavedMoviesData();
+  }, []);
+
   return (
     <>
       <Header />
@@ -30,6 +38,7 @@ function SavedMovies({
         onDeleteMovie={onDeleteMovie}
         isLoading={isLoading}
         apiError={apiError}
+        hasBeenSearched={hasBeenSearched}
       />
       <Footer />
     </>

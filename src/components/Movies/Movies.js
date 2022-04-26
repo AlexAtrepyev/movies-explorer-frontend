@@ -16,7 +16,8 @@ function Movies({
   onAddMovie,
   onDeleteMovie,
   isLoading,
-  apiError
+  apiError,
+  hasBeenSearched
 }) {
   return (
     <>
@@ -35,6 +36,7 @@ function Movies({
         onDeleteMovie={onDeleteMovie}
         isLoading={isLoading}
         apiError={apiError}
+        hasBeenSearched={hasBeenSearched}
       />
       <More
         visible={data?.length > displayedCount}
