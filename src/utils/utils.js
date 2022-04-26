@@ -69,3 +69,10 @@ export function convertDuration(duration) {
   if (duration === 60) return '1ч';
   if (duration > 60) return `${Math.floor(duration / 60)}ч ${duration % 60}м`;
 }
+
+export function setObjectValues(object, value) {
+  return Object.keys(object).reduce((obj, field) => {
+    obj[field] = value;
+    return obj;
+  }, {});
+}

@@ -1,16 +1,19 @@
-import React from 'react';
 import './ProfileForm.css';
-import useFormWithValidation from '../../hooks/useFormWithValidation';
 
-function ProfileForm({ currentUser, inputs, submitText, onSubmit }) {
-  const { values, handleChange, errors, isValid } = useFormWithValidation(currentUser, true);
+import { useEffect } from 'react';
 
-  const parseErrors = (errors) => {
-    return Object.values(errors).find(error => error !== '' && error !== 'Вы пропустили это поле.') ?? 'Все поля должны быть заполнены';
-  }
+import useFormValidation from '../../hooks/useFormValidation';
+
+import ProfileFormField from '../ProfileFormField/ProfileFormField';
+
+function ProfileForm({ currentUser, inputs, apiError, sucess, setSucess, submitText, onSubmit, resetApiError }) {
+  const { values, handleChange, errors, isValid } = useFormValidation(currentUser, true);
+
+  useEffect(() => setSucess(false), []);
   
   function handleSubmit(e) {
     e.preventDefault();
+    resetApiError();
     onSubmit(values);
   }
 
@@ -18,30 +21,25 @@ function ProfileForm({ currentUser, inputs, submitText, onSubmit }) {
     const flag = values['name'] === currentUser['name'] && values['email'] === currentUser['email'];
     return !flag;
   }
+
+  const errorClass = `profile-form__error${apiError ? ' profile-form__error_visible' : ''}`;
+  const sucessClass = `profile-form__sucess${sucess ? ' profile-form__sucess_visible' : ''}`;
+  const submitClass = `profile-form__submit${isValid && hasChanged() ? '' : ' profile-form__submit_inactive'}`;
   
   return (
     <form className="profile-form" onSubmit={handleSubmit}>
-      {inputs.map(input => (
-        <p className="profile-form__field" key={input.key}>
-          <label className="profile-form__label">{input.label}</label>
-          <input
-            className={`profile-form__input${errors[input.name] && errors[input.name] !== '' ? ' profile-form__input_incorrect' : ''}`}
-            type={input.type}
-            name={input.name}
-            placeholder={input.placeholder}
-            value={values[input.name] ?? ''}
-            onChange={handleChange}
-            required
-          />
-        </p>
-      ))}
-      <label className={`profile-form__error${isValid ? ' profile-form__error_hidden' : ''}`}>{parseErrors(errors)}</label>
-      <button
-        className={`profile-form__submit${isValid && hasChanged() ? '' : ' profile-form__submit_inactive'}`}
-        type="submit"
-      >
-        {submitText}
-      </button>
+      {inputs.map(input =>
+        <ProfileFormField
+          key={input.key}
+          field={input}
+          value={values[input.name]}
+          handleChange={handleChange}
+          error={errors[input.name]}
+        />
+      )}
+      <label className={errorClass}>{apiError}</label>
+      <label className={sucessClass}>Профиль успешно изменен!</label>
+      <button className={submitClass} type="submit">{submitText}</button>
     </form>
   );
 }

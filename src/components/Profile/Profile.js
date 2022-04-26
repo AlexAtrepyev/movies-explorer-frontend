@@ -1,33 +1,39 @@
 import './Profile.css';
 
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { CurrentUserContext } from '../../services/currentUserContext';
 
 import Header from '../Header/Header';
 import ProfileForm from '../ProfileForm/ProfileForm';
 
-function Profile({ onUpdateUser, onSignOut }) {
+function Profile({ apiError, sucess, onUpdateUser, onSignOut, resetApiError, setSucess }) {
   const currentUser = useContext(CurrentUserContext);
-
+  
   const inputList = [
-    {key: 1, label: 'Имя', type: 'text', name: 'name', placeholder: currentUser?.name},
-    {key: 2, label: 'E-mail', type: 'email', name: 'email', placeholder: currentUser?.email},
+    {key: 1, label: 'Имя', type: 'text', name: 'name', placeholder: 'Виталий', min: 2, max: 30},
+    {key: 2, label: 'E-mail', type: 'email', name: 'email', placeholder: 'pochta@yandex.ru'}
   ]
 
+  useEffect(() => {
+    resetApiError();
+  }, []);
+  
   return (
     <>
       <Header />
       <section className="profile">
         <h1 className="profile__title">{`Привет, ${currentUser.name}!`}</h1>
-
         <ProfileForm
           currentUser={currentUser}
           inputs={inputList}
+          apiError={apiError}
+          resetApiError={resetApiError}
+          sucess={sucess}
+          setSucess={setSucess}
           submitText='Редактировать'
           onSubmit={onUpdateUser}
         />
-
         <button className="profile__logout-btn" onClick={onSignOut}>Выйти из аккаунта</button>
       </section>
     </>

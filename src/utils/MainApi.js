@@ -6,8 +6,9 @@ class MainApi {
     };
   }
   
-  _checkResponseStatus(res) {
-    return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
+  async _checkResponseStatus(res) {
+    const parsedRes = await res.json();
+    return res.ok ? parsedRes : Promise.reject(parsedRes.message);
   }
 
   register(name, email, password) {

@@ -40,6 +40,7 @@ function App() {
   
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
+  const [sucess, setSucess] = useState(false);
   
   
   const [displayedCount, setDisplayedCount] = useState(getDisplayedCount(getLayout(window.innerWidth)));
@@ -86,6 +87,10 @@ function App() {
     setMoviesData(dataTemplate);
     setSavedMoviesData(dataTemplate);
     setDisplayedCount(getDisplayedCount(layout));
+  }
+
+  function resetApiError() {
+    setApiError(null);
   }
   
   // useEffects
@@ -137,29 +142,35 @@ function App() {
       searchMovies(savedMoviesData, savedMoviesData.stableQuery);
     }
   }, [savedMoviesData.shortsOnly]);
-
+  
   useEffect(() => {
     checkToken();
   }, []);
   
   // Auth
   function handleRegister({ name, email, password }) {
+    resetApiError();
     mainApi.register(name, email, password)
       .then(() => history.push('/signin'))
-      .catch(err => console.log(err));
+      .catch(err => setApiError(err));
   }
   
   function handleLogin({ email, password }) {
+    resetApiError();
     mainApi.authorize(email, password)
       .then(() => setLoggedIn(true))
       .then(() => history.push('/movies'))
-      .catch(err => console.log(err));
+      .catch(err => setApiError(err));
   }
 
   function handleUpdateUser({ name, email }) {
+    resetApiError();
     mainApi.setUserInfo(name, email)
-      .then(user => setCurrentUser(user))
-      .catch(err => console.log(err));
+      .then(user => {
+        setCurrentUser(user);
+        setSucess(true);
+      })
+      .catch(err => setApiError(err));
   }
   
   function handleSignOut() {
@@ -168,7 +179,7 @@ function App() {
         clearStates();
         localStorage.clear();
       })
-      .catch(err => console.log(err));
+      .catch(err => setApiError(err));
   }
   
   // Movies
@@ -306,18 +317,24 @@ function App() {
 
             <ProtectedRoute
               path="/profile"
+
+              apiError={apiError}
+              sucess={sucess}
               
               onUpdateUser={handleUpdateUser}
               onSignOut={handleSignOut}
+              resetApiError={resetApiError}
+              setSucess={setSucess}
+
               component={Profile}
             />
             
             <Route path="/signup">
-              <Register onRegister={handleRegister} />
+              <Register onSubmit={handleRegister} apiError={apiError} resetApiError={resetApiError} />
             </Route>
 
             <Route path="/signin">
-              <Login onLogin={handleLogin} />
+              <Login onSubmit={handleLogin} apiError={apiError} resetApiError={resetApiError} />
             </Route>
             
             <Route path="*">

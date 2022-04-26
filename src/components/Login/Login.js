@@ -1,32 +1,28 @@
-import './Login.css';
-import { Link } from 'react-router-dom';
-import AppLogo from '../AppLogo/AppLogo';
-import Form from '../Form/Form';
+import Auth from '../Auth/Auth';
 
-function Login({ onLogin }) {
-  const inputList = [
+import { useEffect } from 'react';
+
+function Login({ onSubmit, apiError, resetApiError }) {
+  const fieldList = [
     {key: 1, label: 'E-mail', type: 'email', name: 'email', placeholder: 'pochta@yandex.ru'},
-    {key: 2, label: 'Пароль', type: 'password', name: 'password', placeholder: 'Пароль'},
+    {key: 2, label: 'Пароль', type: 'password', name: 'password', placeholder: 'Пароль', min: 4, max: 12}
   ]
 
-  return (
-    <section className="register">
-      <div className='register__container'>
-        <AppLogo />
-        <h1 className="register__title">Рады видеть!</h1>
-        <Form
-          inputs={inputList}
-          margin={'margin_l'}
-          submitText='Войти'
-          onSubmit={onLogin}
-        />
-        <div className="register__redirection">
-          Ещё не зарегистрированы?
-          <Link className="register__login-link" to="/signup">Регистрация</Link>
-        </div>
-      </div>
-    </section>
-  );
+  useEffect(() => {
+    resetApiError();
+  }, []);
+
+  return <Auth
+    title="Рады видеть!"
+    fields={fieldList}
+    submitText="Войти"
+    onSubmit={onSubmit}
+    apiError={apiError}
+    resetApiError={resetApiError}
+    redirectionText="Ещё не зарегистрированы?"
+    redirectionLinkText="Регистрация"
+    redirectionLink='/signup'
+  />;
 }
 
 export default Login;

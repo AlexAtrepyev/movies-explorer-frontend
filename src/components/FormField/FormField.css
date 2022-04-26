@@ -1,0 +1,43 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.field__name {
+  font-size: 10px;
+  line-height: 12px;
+  color: #a0a0a0;
+  margin-bottom: 10px;
+}
+
+.field__input {
+  font-size: 13px;
+  line-height: 16px;
+  color: #000;
+  background: #f9f9f9;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+}
+
+.field__input::placeholder {
+  color: #a0a0a0;
+}
+
+.field__input_incorrect {
+  color: #ff4062;
+}
+
+.field__error {
+  height: 12px;
+  font-size: 10px;
+  line-height: 12px;
+  color: #ff4062;
+  margin: 4px 0;
+  opacity: 0;
+}
+
+.field__error_visible {
+  opacity: 1;
+}
