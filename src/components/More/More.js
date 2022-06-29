@@ -1,10 +1,16 @@
 import './More.css';
 
-function More(props) {
+function More({ visible, onIncreaseDisplayedCount }) {
   return (
-    <div className="more">
-      <button className="more__button">Ещё</button>
-    </div>
+    <>
+      {visible ? (
+        <div className="more">
+          <button className="more__button" onClick={onIncreaseDisplayedCount} >Ещё</button>
+        </div>
+      ) : (
+        <div className="more more_inactive" />
+      )}
+    </>
   );
 }
 

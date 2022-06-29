@@ -7,19 +7,10 @@
   padding-left: calc((100% - 384px) / 12.8);
 }
 
-.header__content {
-  display: flex;
-  align-items: center;
-}
-
 @media screen and (max-width: 768px) {
   .header {
     padding-right: calc((100% - 124.875px) / 21.438);
     padding-left: calc((100% - 124.875px) / 21.438);
-  }
-
-  .header__content {
-    display: none;
   }
 }
 

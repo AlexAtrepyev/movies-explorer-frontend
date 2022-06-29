@@ -9,6 +9,11 @@
   padding-bottom: 242px;
 }
 
+.movies-card-list__info {
+  text-align: center;
+  font-size: 24px;
+}
+
 .movies-card-list__items {
   list-style-type: none;
   display: grid;

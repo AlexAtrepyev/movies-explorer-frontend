@@ -4,6 +4,11 @@
   cursor: pointer;
 }
 
+.movies-card__link {
+  display: block;
+  text-decoration: none;
+}
+
 .movies-card__img-container {
   position: relative;
 }
@@ -87,17 +92,19 @@
   color: #000;
 }
 
-.movies-card__btn_type_delete {
+.movies-card__btn_type_saved {
+  opacity: 1;
+  visibility: visible;
   width: 21px;
-  background-image: url("../../images/delete-button-logo.svg");
+  background-color: #ff4062;
+  background-image: url("../../images/save-button-logo.svg");
   background-repeat: no-repeat;
   background-position: center;
 }
 
-.movies-card__saved-label {
+.movies-card__btn_type_delete {
   width: 21px;
-  background-color: #ff4062;
-  background-image: url("../../images/save-button-logo.svg");
+  background-image: url("../../images/delete-button-logo.svg");
   background-repeat: no-repeat;
   background-position: center;
 }

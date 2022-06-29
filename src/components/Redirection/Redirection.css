@@ -1,0 +1,26 @@
+.redirection {
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  color: #a0a0a0;
+  margin-top: 16px;
+}
+
+.redirection__link {
+  color: #000;
+  text-decoration: none;
+  margin-left: 6px;
+  transition: opacity .25s ease;
+}
+
+.redirection__link:hover {
+  opacity: .7;
+}
+
+@media screen and (max-width: 426px) {
+  .redirection {
+    font-size: 12px;
+    line-height: 15px;
+    margin-top: 14px;
+  }
+}

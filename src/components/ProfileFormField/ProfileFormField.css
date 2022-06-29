@@ -1,0 +1,41 @@
+.profile__field {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+  margin: 0 0 17px;
+}
+
+.profile__field:last-of-type {
+  padding-bottom: 0;
+  border-bottom: none;
+  margin: 0;
+}
+
+.profile__name {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  color: #000;
+}
+
+.profile__input {
+  width: 300px;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: right;
+  color: #000;
+  padding: 0;
+  border: none;
+}
+
+.profile__input_incorrect {
+  color: #ff4062;
+}
+
+@media screen and (max-width: 426px) {
+  .profile__input {
+    width: 200px;
+  }
+}

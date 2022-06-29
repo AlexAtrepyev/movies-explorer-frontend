@@ -1,26 +1,22 @@
 import './Header.css';
-import AppLogo from '../AppLogo/AppLogo';
-import Navigation from '../Navigation/Navigation';
-import Account from '../Account/Account';
-import Menu from '../Menu/Menu';
 
-function Header(props) {
+import { useContext } from 'react';
+
+import { LayoutContext } from '../../services/layoutContext';
+import { LoggedInContext } from '../../services/loggedInContext';
+
+import AppLogo from '../AppLogo/AppLogo';
+import Menu from '../Menu/Menu';
+import Navigation from '../Navigation/Navigation';
+
+function Header() {
+  const layout = useContext(LayoutContext);
+  const loggedIn = useContext(LoggedInContext);
+
   return (
     <header className="header">
       <AppLogo />
-
-      {props.isLogged ? (
-        <>
-          <div className="header__content">
-            <Navigation isLogged={props.isLogged} location="header" />
-            <Account />
-          </div>
-          <Menu isLogged={props.isLogged} />
-        </>
-      ) : (
-        <Navigation isLogged={props.isLogged} location="header" />
-      )}
-      
+      {layout !== 'desktop' && loggedIn ? <Menu /> : <Navigation />}
     </header>
   );
 }

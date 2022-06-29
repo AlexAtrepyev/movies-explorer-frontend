@@ -1,14 +1,7 @@
 .nav {
   display: flex;
   align-items: center;
-}
-
-.header__nav {
   flex-direction: row;
-}
-
-.menu__nav {
-  flex-direction: column;
 }
 
 .nav__link {
@@ -59,16 +52,17 @@
 }
 
 @media screen and (max-width: 768px) {
+  .nav_logged_in {
+    flex-direction: column;
+    height: 100%;
+  }
+
   .nav__link_logged_in {
     font-weight: 500;
     font-size: 18px;
     line-height: 22px;
     margin-left: 0;
     margin-bottom: 28px;
-  }
-
-  .nav__link_logged_in:last-of-type {
-    margin-bottom: 0;
   }
   
   .nav__link_active {

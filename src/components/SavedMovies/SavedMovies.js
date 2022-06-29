@@ -1,17 +1,46 @@
+import { useEffect } from 'react';
+
+import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import Preloader from '../Preloader/Preloader';
-import cards from '../../utils/cards';
+import Footer from '../Footer/Footer';
 
-function SavedMovies() {
+function SavedMovies({
+  query,
+  shortsOnly,
+  data,
+  onChangeQuery,
+  onChangeShortsOnly,
+  onSearch,
+  resetSavedMoviesData,
+  onDeleteMovie,
+  isLoading,
+  apiError,
+  hasBeenSearched
+}) {
+  useEffect(() => {
+    resetSavedMoviesData();
+  }, []);
+
   return (
     <>
-      <SearchForm />
-      {cards ? (
-        <MoviesCardList cards={cards} section="saved-movies" />
-      ) : (
-        <Preloader />
-      )}
+      <Header />
+      <SearchForm
+        query={query}
+        shortsOnly={shortsOnly}
+        onChangeQuery={onChangeQuery}
+        onChangeShortsOnly={onChangeShortsOnly}
+        onSearch={onSearch}
+      />
+      <MoviesCardList
+        section="saved-movies"
+        data={data}
+        onDeleteMovie={onDeleteMovie}
+        isLoading={isLoading}
+        apiError={apiError}
+        hasBeenSearched={hasBeenSearched}
+      />
+      <Footer />
     </>
   );
 }

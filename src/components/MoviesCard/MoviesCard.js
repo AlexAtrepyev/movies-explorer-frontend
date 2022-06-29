@@ -1,29 +1,46 @@
 import './MoviesCard.css';
 
-function convertDuration(duration) {
-  if (duration < 60) return `${duration % 60}м`;
-  if (duration === 60) return '1ч';
-  if (duration > 60) return `${Math.floor(duration / 60)}ч ${duration % 60}м`;
-}
+import { convertDuration } from '../../utils/utils';
 
-function MoviesCard(props) {
+function MoviesCard({ section, data, onAddMovie, onDeleteMovie }) {
+  function handleAddMovie() {
+    onAddMovie(data)
+  }
+
+  function handleDeleteMovie() {
+    onDeleteMovie(data._id);
+  }
+
   return (
-    <li key={props.key} className="movies-card">
-      <div className="movies-card__img-container">
-        <img className="movies-card__img" src={`https://api.nomoreparties.co${props.image}`} alt="Постер фильма" />
-      </div>
-      <div className="movies-card__info-container">
-        <h2 className="movies-card__title">{props.nameRU}</h2>
-        <span className="movies-card__duration">{convertDuration(props.duration)}</span>
-      </div>
-      {props.isSaved ? (
-        <div className="movies-card__saved-label corner-elem" />
-      ) : (
-        <button className="movies-card__btn movies-card__btn_type_add corner-elem">Сохранить</button>
-      )}
-      {
-      //<button className="movies-card__btn movies-card__btn_type_delete corner-elem" />
-      }
+    <li className="movies-card" >
+      <a className="movies-card__link" href={data.trailer} target="_blank" rel="noopener noreferrer">
+        <div className="movies-card__img-container">
+          <img className="movies-card__img" src={data.image} alt="Постер фильма" />
+        </div>
+        <div className="movies-card__info-container">
+          <h2 className="movies-card__title">{data.nameRU}</h2>
+          <span className="movies-card__duration">{convertDuration(data.duration)}</span>
+        </div>
+      </a>
+      {section === 'movies' ?
+        data.isSaved ? (
+          <button
+            className="movies-card__btn movies-card__btn_type_saved corner-elem"
+            onClick={handleDeleteMovie}
+          />
+        ) : (
+          <button
+            className="movies-card__btn movies-card__btn_type_add corner-elem"
+            onClick={handleAddMovie}
+          >
+            Сохранить
+          </button>
+        ) : (
+          <button
+            className="movies-card__btn movies-card__btn_type_delete corner-elem"
+            onClick={handleDeleteMovie}
+          />
+        )}
     </li>
   );
 }

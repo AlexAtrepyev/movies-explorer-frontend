@@ -1,24 +1,39 @@
 import './Form.css';
 
-function Form(props) {
+import React from 'react';
+
+import useFormValidation from '../../hooks/useFormValidation';
+
+import FormField from '../FormField/FormField';
+
+function Form({ fields, apiError, resetApiError, submitText, onSubmit }) {
+  const { values, handleChange, errors, isValid } = useFormValidation(fields.reduce((obj, field) => {
+    obj[field.name] = '';
+    return obj;
+  }, {}));
+  
+  function handleSubmit(e) {
+    e.preventDefault();
+    resetApiError();
+    onSubmit(values);
+  }
+  
+  const errorClass = `form__error${apiError ? ' form__error_visible' : ''}`;
+  const submitClass = `form__submit${isValid ? '' : ' form__submit_inactive'}`;
+
   return (
-    <form className="form">
-      {props.isNameRequired && (
-        <>
-          <label className="form__label" for="name">Имя</label>
-          <input className="form__input" type="text" id="name" placeholder="Виталий" required />
-        </>
+    <form className="form" onSubmit={handleSubmit}>
+      {fields.map(field =>
+        <FormField
+          key={field.key}
+          field={field}
+          value={values[field.name]}
+          handleChange={handleChange}
+          error={errors[field.name]}
+        />
       )}
-
-      <label className="form__label" for="email">E-mail</label>
-      <input className="form__input" type="email" id="email" placeholder="pochta@yandex.ru" required />
-      
-      <label className="form__label" for="password">Пароль</label>
-      <input className="form__input form__input_incorrect" type="password" id="password" placeholder="password" required />
-
-      <label className="form__error form__error_hidden">Что-то пошло не так...</label>
-      
-      <button className={`form__submit form__submit_margin_${props.isNameRequired ? 's' : 'l'}`} type="submit">{props.submitText}</button>
+      <label className={errorClass}>{apiError}</label>
+      <button className={submitClass} type="submit">{submitText}</button>
     </form>
   );
 }
